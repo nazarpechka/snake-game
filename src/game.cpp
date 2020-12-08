@@ -60,6 +60,16 @@ void Game::gameLoop() {
 
     m_window.clear(sf::Color(188, 201, 1));
 
+    sf::Vector2f head_pos = m_snake[0].getPosition();
+    if (head_pos.x >= WINDOW_WIDTH)
+      m_snake[0].setPosition(0, head_pos.y);
+    else if (head_pos.x <= 0)
+      m_snake[0].setPosition(WINDOW_WIDTH, head_pos.y);
+    else if (head_pos.y >= WINDOW_HEIGHT)
+      m_snake[0].setPosition(head_pos.x, 0);
+    else if (head_pos.y <= 0)
+      m_snake[0].setPosition(head_pos.x, WINDOW_HEIGHT);
+
     for (int i = m_snake.size() - 1; i >= 0; --i) {
       if (i == 0) {
         m_snake[i].move(m_current_movement);
@@ -67,8 +77,6 @@ void Game::gameLoop() {
         m_snake[i].setPosition(m_snake[i - 1].getPosition());
 
       m_window.draw(m_snake[i]);
-      // std::cout << "x=" << snake_part.getPosition().x
-      //           << ",y=" << snake_part.getPosition().y << '\n';
     }
 
     m_window.display();

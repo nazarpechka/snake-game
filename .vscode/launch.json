@@ -8,7 +8,7 @@
             "name": "Build and launch (lldb)",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/bin/app", //path to your programs exe and exe name
+            "program": "${workspaceFolder}/bin/game", //path to your programs exe and exe name
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

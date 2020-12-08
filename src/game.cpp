@@ -5,10 +5,10 @@
 const uint32_t Game::WINDOW_HEIGHT = 720;
 const uint32_t Game::WINDOW_WIDTH = 960;
 
-const sf::Vector2f Game::MOVE_UP(0.0f, -30.0f);
-const sf::Vector2f Game::MOVE_DOWN(0.0f, 30.0f);
-const sf::Vector2f Game::MOVE_LEFT(-30.0f, 0.0f);
-const sf::Vector2f Game::MOVE_RIGHT(30.0f, 0.0f);
+const sf::Vector2f Game::MOVE_UP(0.0f, -35.0f);
+const sf::Vector2f Game::MOVE_DOWN(0.0f, 35.0f);
+const sf::Vector2f Game::MOVE_LEFT(-35.0f, 0.0f);
+const sf::Vector2f Game::MOVE_RIGHT(35.0f, 0.0f);
 
 Game::Game()
     : m_window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake game"),
@@ -21,8 +21,8 @@ void Game::gameLoop() {
 
   expandSnake();
   expandSnake();
-
-  int moved = 0;
+  expandSnake();
+  expandSnake();
 
   while (m_window.isOpen()) {
     sf::Event event;
@@ -37,22 +37,16 @@ void Game::gameLoop() {
         break;
 
       case sf::Event::KeyPressed:
-        if (event.key.code == sf::Keyboard::W &&
-            m_current_movement != MOVE_UP) {
+        if (event.key.code == sf::Keyboard::W) {
           m_current_movement = MOVE_UP;
-          moved = 0;
         } else if (event.key.code == sf::Keyboard::A &&
-                   m_current_movement != MOVE_LEFT) {
-          m_current_movement = MOVE_LEFT;
-          moved = 0;
-        } else if (event.key.code == sf::Keyboard::S &&
-                   m_current_movement != MOVE_DOWN) {
-          m_current_movement = MOVE_DOWN;
-          moved = 0;
-        } else if (event.key.code == sf::Keyboard::D &&
                    m_current_movement != MOVE_RIGHT) {
+          m_current_movement = MOVE_LEFT;
+        } else if (event.key.code == sf::Keyboard::S) {
+          m_current_movement = MOVE_DOWN;
+        } else if (event.key.code == sf::Keyboard::D &&
+                   m_current_movement != MOVE_LEFT) {
           m_current_movement = MOVE_RIGHT;
-          moved = 0;
         }
         break;
 
@@ -66,17 +60,16 @@ void Game::gameLoop() {
 
     m_window.clear(sf::Color(188, 201, 1));
 
-    for (int i = 0; i < m_snake.size(); ++i) {
-      if (i <= moved) {
+    for (int i = m_snake.size() - 1; i >= 0; --i) {
+      if (i == 0) {
         m_snake[i].move(m_current_movement);
       } else
-        m_snake[i].move(previous_movement);
+        m_snake[i].setPosition(m_snake[i - 1].getPosition());
 
       m_window.draw(m_snake[i]);
       // std::cout << "x=" << snake_part.getPosition().x
       //           << ",y=" << snake_part.getPosition().y << '\n';
     }
-    moved++;
 
     m_window.display();
     sf::sleep(sf::seconds(0.5));
@@ -92,7 +85,7 @@ void Game::expandSnake() {
         sf::Vector2f(WINDOW_WIDTH / 2.0f, WINDOW_HEIGHT / 2.0f));
   } else {
     sf::Vector2f tail_position = m_snake.back().getPosition();
-    sf::Vector2f new_tail_position(tail_position.x - 30.0f, tail_position.y);
+    sf::Vector2f new_tail_position(tail_position.x - 35.0f, tail_position.y);
 
     snake_part.setPosition(new_tail_position);
   }

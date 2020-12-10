@@ -4,12 +4,14 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#include "food.h"
+#include "snake.h"
+
 class Game {
 public:
   Game();
 
   void gameLoop();
-  void expandSnake();
 
 private:
   static const uint32_t WINDOW_HEIGHT;
@@ -21,7 +23,8 @@ private:
   static const sf::Vector2f MOVE_RIGHT;
 
   sf::RenderWindow m_window;
-  std::vector<sf::RectangleShape> m_snake;
+  Snake m_snake;
+  Food m_food;
   sf::Vector2f m_current_movement;
 };
 
